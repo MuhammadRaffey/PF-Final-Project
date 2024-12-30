@@ -1,3 +1,4 @@
+// C++ Program That uses Open AI's LLM gpt-4o-mini to Help Computer Science Students and Saves Interactions to a File
 #include <iostream>
 #include <fstream>
 #include <curl/curl.h>
@@ -7,7 +8,6 @@ using namespace std;
 
 using json = nlohmann::json;
 
-// Callback function to handle cURL response
 size_t writeCallback(char *data, size_t size, size_t nmemb, string *writerData)
 {
     if (writerData == nullptr)
@@ -16,7 +16,6 @@ size_t writeCallback(char *data, size_t size, size_t nmemb, string *writerData)
     return size * nmemb;
 }
 
-// Function to fetch a response from OpenAI API
 string fetchResponseFromAPI(const string &prompt)
 {
     dotenv::init();
@@ -33,37 +32,31 @@ string fetchResponseFromAPI(const string &prompt)
 
     if (curl)
     {
-        // Use chat/completions API
         curl_easy_setopt(curl, CURLOPT_URL, "https://api.openai.com/v1/chat/completions");
 
-        // Set headers
         struct curl_slist *headers = nullptr;
         headers = curl_slist_append(headers, "Content-Type: application/json");
         headers = curl_slist_append(headers, auth_header.c_str());
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-        // Set payload for chat API
         string payload = R"({
-            "model": "gpt-4",
-            "messages": [
-                {"role": "user", "content": ")" + prompt + R"("}
-            ],
-            "temperature": 0.7
+    "model": "gpt-4o-mini",
+    "messages": [
+        {"role": "system", "content": "You are an AI assistant for a computer science student. Your goal is to help them ace their studies by explaining concepts, solving problems, and offering guidance in a clear and concise manner."},
+        {"role": "user", "content": ")" +
+                         prompt + R"("}
+    ],
+    "temperature": 0.7
         })";
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload.c_str());
 
-        // Set write callback
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, payload.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_data);
 
-        // Perform the request
         CURLcode res = curl_easy_perform(curl);
         if (res != CURLE_OK)
         {
             cerr << "cURL Error: " << curl_easy_strerror(res) << endl;
         }
-
-        // Cleanup
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     }
@@ -72,7 +65,6 @@ string fetchResponseFromAPI(const string &prompt)
         cerr << "Failed to initialize cURL." << endl;
     }
 
-    // Parse JSON response
     try
     {
         auto parsed = json::parse(response_data);
@@ -98,7 +90,6 @@ string fetchResponseFromAPI(const string &prompt)
     }
 }
 
-// Function to save interaction
 void saveToFile(const string &question, const string &response)
 {
     ofstream file("interactions.txt", ios::app);

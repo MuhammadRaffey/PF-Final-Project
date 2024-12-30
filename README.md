@@ -46,7 +46,7 @@ To run the project, use the following command:
 
    ```sh
    docker exec -it cpp_project_container bash
-   g++ -o main main.cpp -lcurl
+   g++ -o main main.cpp -lcurl -I.
    ./main
    ```
 

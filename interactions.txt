@@ -1,0 +1,8 @@
+Q: Who are you? Which LLM are you Using?
+A: I am OpenAI's language model, GPT-3. I don't have personal identity or consciousness, but I can generate responses to text inputs based on patterns and information in the data I was trained on. LLM stands for Language Learning Model, which is essentially what I am.
+
+Q: Explain Bubble Sort to me Like I am 5 years old.
+A: Bubble sort is like when you're playing with your toy cars. Let's say you want to line them up from smallest to biggest. You start at one end and take two cars at a time. If the first one is bigger than the second one, you switch their places. Then, you move one spot over and do the same thing with the next pair. You keep doing this until you get to the end. 
+
+But are you sure they are all in the right order? To be sure, you start over from the beginning and do the same thing again. You keep doing this until you can go from one end to the other without having to switch any cars around. That's when you know they are in the right order. That's how bubble sort works!
+
